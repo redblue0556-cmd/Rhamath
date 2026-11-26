@@ -569,6 +569,10 @@ object QuestionBank {
                     } while (a * d - b * c == 0)
                     fun mk(p1: Int, q1: Int, p2: Int, q2: Int) = "\\frac{${lin(p1, q1)}}{${lin(p2, q2)}}"
                     val ans = mk(-d, b, c, -a)
+                    val cxTerm = if (c == 1) "xy" else "${c}xy"
+                    val dyTerm = if (d == 1) "y" else "${d}y"
+                    val cyTerm = if (c == 1) "y" else "${c}y"
+                    val axTerm = if (a == 1) "x" else "${a}x"
                     qOf(
                         ch, t,
                         "Diketahui \$f(x)=\\frac{${lin(a, b)}}{${lin(c, d)}}\$. Rumus \$f^{-1}(x)\$ adalah ....",
@@ -582,15 +586,15 @@ object QuestionBank {
                             )
                         ),
                         listOf("\$f(x)=\\frac{${lin(a, b)}}{${lin(c, d)}}\$"),
-                        "f(x)=\\frac{ax+b}{cx+d}\\Rightarrow f^{-1}(x)=\\frac{-dx+b}{cx-a}",
+                        "y=\\frac{ax+b}{cx+d}\\Rightarrow x=\\frac{-dy+b}{cy-a}",
                         listOf(
-                            "a = $a,\\; b = $b,\\; c = $c,\\; d = $d || Kenali bentuk \$f(x)=\\frac{ax+b}{cx+d}\$ lalu baca nilai \$a,b,c,d\$.",
-                            "f^{-1}(x) = \\frac{-dx+b}{cx-a} || Rumus cepat: tukar \$a\$ dan \$d\$, beri tanda minus pada \$d\$ (pembilang) dan \$a\$ (penyebut).",
-                            "\\text{pembilang} = -($d)x+$b ;; \\text{pembilang} = ${lin(-d, b)} || Masukkan \$d=$d\$ dan \$b=$b\$.",
-                            "\\text{penyebut} = ${c}x-($a) ;; \\text{penyebut} = ${lin(c, -a)} || Masukkan \$c=$c\$ dan \$a=$a\$.",
-                            "f^{-1}(x) = $ans || Gabungkan pembilang dan penyebut."
+                            "y = \\frac{${lin(a, b)}}{${lin(c, d)}} || Misalkan \$f(x)=y\$ terlebih dahulu.",
+                            "y(${lin(c, d)}) = ${lin(a, b)} ;; $cxTerm+$dyTerm = ${lin(a, b)} || Kalikan silang penyebut \$(${lin(c, d)})\$ ke ruas kiri lalu jabarkan.",
+                            "$cxTerm-$axTerm = -$dyTerm+$b || Kumpulkan semua suku yang memuat \$x\$ di ruas kiri.",
+                            "x($cyTerm-$a) = -$dyTerm+$b || Faktorkan \$x\$ di ruas kiri.",
+                            "x = \\frac{-$dyTerm+$b}{$cyTerm-$a} ;; f^{-1}(x) = $ans || Bagi kedua ruas dengan \$($cyTerm-$a)\$, lalu ganti \$y\$ menjadi \$x\$."
                         ),
-                        "Hafalkan: tukar \$a\$ dan \$d\$, lalu beri tanda minus pada \$d\$ (pembilang) dan \$a\$ (penyebut)."
+                        "Untuk cek cepat: bentuk \$\\frac{ax+b}{cx+d}\$ inversnya \$\\frac{-dx+b}{cx-a}\$ (tukar \$a\$ dan \$d\$ lalu beri minus)."
                     )
                 }
                 3 -> {
