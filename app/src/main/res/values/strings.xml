@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Rhajesh Match</string>
+    <string name="chapter_tag">— CHAPTER 01 —</string>
+    <string name="app_subtitle">BAB: FUNGSI &amp; LINGKARAN</string>
+    <string name="start_learning">▶ Mulai Belajar</string>
+    <string name="tap_to_skip">Ketuk di mana saja untuk mempercepat</string>
+    <string name="choose_chapter">PILIH BAB!</string>
+    <string name="stars_collected">Bintang terkumpul</string>
+    <string name="generator_title">GENERATOR SOAL OTOMATIS</string>
+    <string name="generator_desc">Soal baru + kunci + pembahasan dibuat otomatis, tidak akan habis!</string>
+    <string name="create_new_question">Buat Soal Baru</string>
+    <string name="lab_button">Lab Rumus &amp; Kalkulator Busur</string>
+    <string name="back_to_lobby">Kembali ke Lobi</string>
+    <string name="prev_question">◀ Sebelumnya</string>
+    <string name="next_question">Berikutnya ▶</string>
+    <string name="new_question_next">Soal Baru ▶</string>
+    <string name="footer_motto">Rhajesh Match · GANBARU!</string>
+    <string name="reset_progress">Reset Progres</string>
+    <string name="reset_confirm_title">Reset Semua Progres?</string>
+    <string name="reset_confirm_msg">Semua XP, bintang, dan riwayat soal selesai akan kembali ke nol.</string>
+    <string name="cancel">Batal</string>
+    <string name="confirm">Ya, Reset</string>
+</resources>

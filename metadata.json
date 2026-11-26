@@ -1,0 +1,6 @@
+{
+  "name": "Rhajesh Match",
+  "description": "Aplikasi kuis matematika interaktif bergaya manga untuk belajar Aljabar Fungsi, Komposisi, Invers, dan Geometri Lingkaran lengkap dengan 500 soal, generator otomatis, dan lab rumus busur.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Rhajesh Match</title>
+<meta name="theme-color" content="#111111"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Noto+Sans+JP:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{--ink:#111;--paper:#f6f1e3}
+body{background:var(--paper);color:var(--ink);font-family:'Noto Sans JP',system-ui,sans-serif;font-weight:700;min-height:100vh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+background-image:radial-gradient(#0002 1px,transparent 1.5px);background-size:7px 7px}
+.sfx{font-family:Bangers,Impact,sans-serif;letter-spacing:2px}
+.panel{border:3px solid var(--ink);background:#fffdf6;box-shadow:5px 5px 0 var(--ink)}
+.btn{border:3px solid var(--ink);background:#fff;box-shadow:4px 4px 0 var(--ink);transition:.08s;text-align:left;padding:.6rem .8rem;cursor:pointer}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.btn.red{background:#e11d2e;color:#fff}.btn.ink{background:var(--ink);color:#fff}
+.speed{background:repeating-conic-gradient(from 0deg at 50% 50%,#111 0 1.2deg,transparent 1.2deg 6deg);opacity:.14;position:absolute;inset:0;pointer-events:none}
+.opt.ok{background:#16a34a!important;color:#fff}.opt.bad{background:#e11d2e!important;color:#fff}
+.bar{height:22px;border:3px solid var(--ink);background:#fff;overflow:hidden}.bar>i{display:block;height:100%;background:repeating-linear-gradient(45deg,#111 0 6px,#555 6px 12px);width:0;transition:width .3s}
+.pop{animation:pop .35s ease-out}@keyframes pop{0%{transform:scale(.3) rotate(-8deg)}70%{transform:scale(1.15) rotate(3deg)}100%{transform:scale(1)}}
+.bub{position:relative;border:3px solid var(--ink);border-radius:18px;background:#fff;padding:.7rem}
+.step{border:2px solid var(--ink);background:#fff;padding:.5rem;margin-top:.5rem;box-shadow:3px 3px 0 var(--ink)}
+.katex{font-size:1.05em}
+.stp{border:2px solid var(--ink);background:#fffdf6;padding:.5rem .6rem;box-shadow:3px 3px 0 var(--ink)}
+.solv{border:2px solid var(--ink);border-left:6px solid #e11d2e;padding:.4rem .7rem;margin:.4rem 0;background:#fdfdf8 repeating-linear-gradient(transparent 0 1.9rem,#9ec5e8 1.9rem calc(1.9rem + 1px));overflow-x:auto}
+.solv .katex-display{margin:.35rem 0;text-align:left}.solv .katex-display>.katex{text-align:left}
+.expl{background:#fff3b8;border:2px solid var(--ink);padding:.3rem .5rem;margin:.3rem 0 0;font-size:.9rem}
+.arrow{text-align:center;font-size:1.4rem;line-height:1.1;margin:.1rem 0}
+.sec{border:3px solid var(--ink);background:#fff;margin-top:.75rem;box-shadow:4px 4px 0 var(--ink)}
+.sec>h3{background:var(--ink);color:#fff;font-family:Bangers,Impact,sans-serif;letter-spacing:2px;font-size:1.15rem;padding:.2rem .6rem}
+.sec>div{padding:.6rem;line-height:1.7;font-size:.95rem}
+.num{display:inline-flex;flex:none;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--ink);color:#fff;align-items:center;justify-content:center;margin-right:.5rem;font-family:Bangers,Impact,sans-serif}
+.row{display:flex;align-items:flex-start;padding:.45rem 0;border-bottom:2px dashed #999}.row:last-child{border:0}
+.ans{background:#16a34a;color:#fff;border:3px solid var(--ink);padding:.6rem;margin-top:.75rem;box-shadow:4px 4px 0 var(--ink);font-size:1.05rem}.hidden{display:none!important}
+</style></head>
+<body>
+<!-- LOADING -->
+<section id="sc-load" class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden" style="background:var(--paper)" onclick="skipLoad()">
+<div class="speed"></div>
+<div class="panel relative max-w-md w-full p-5 text-center">
+<div class="text-xs">— CHAPTER 01 —</div>
+<div class="text-6xl my-2">🥷📐⭕</div>
+<h1 class="sfx text-4xl leading-none">RHAJESH MATCH</h1>
+<div class="sfx text-xl bg-black text-white inline-block px-2 mt-1">BAB: FUNGSI &amp; LINGKARAN</div>
+<div class="bar mt-5"><i id="pg"></i></div>
+<p id="pgt" class="text-sm mt-2">Memuat Chapter Soal...</p>
+<button id="startBtn" class="btn red w-full mt-4 text-center sfx text-2xl hidden" onclick="event.stopPropagation();startApp()">▶ Mulai Belajar</button>
+</div></section>
+
+<!-- LOBI -->
+<main id="sc-lobby" class="hidden max-w-3xl mx-auto p-3 space-y-3">
+<div class="grid grid-cols-3 gap-3">
+<div class="panel p-3 col-span-3 sm:col-span-2 flex gap-3 items-center">
+<div class="w-16 h-16 rounded-full border-4 border-black bg-white text-4xl flex items-center justify-center shrink-0">🥷</div>
+<div class="flex-1"><div class="sfx text-xl" id="rank">Peringkat E</div><div class="text-xs" id="rankn"></div>
+<div class="bar mt-1" style="height:16px"><i id="xpbar"></i></div><div class="text-xs mt-1" id="xptxt"></div></div></div>
+<div class="panel p-3 col-span-3 sm:col-span-1 text-center bg-black text-white"><div class="sfx text-3xl" id="stars">⭐ 0</div><div class="text-xs">Bintang terkumpul</div></div>
+</div>
+<div class="panel p-3"><div class="sfx text-3xl">PILIH BAB!</div>
+<div id="chs" class="grid sm:grid-cols-2 gap-3 mt-2"></div></div>
+<div class="panel p-3"><div class="sfx text-2xl">🤖 AI SMART QUESTION GENERATOR</div>
+<p class="text-xs mb-2">Soal baru + kunci + pembahasan dibuat otomatis, tidak akan habis!</p>
+<div class="flex gap-2"><select id="aiCh" class="btn flex-1"></select><button class="btn red sfx text-xl" onclick="openQ(+$('aiCh').value,'ai')">🤖 Buat Soal Baru</button></div></div>
+<div class="grid sm:grid-cols-2 gap-3">
+<button class="btn ink" onclick="showLab()">🧪 Lab Rumus &amp; Kalkulator Busur</button>
+<button id="instBtn" class="btn red" onclick="installApp()">📲 Instal Aplikasi ke HP</button></div>
+<p class="text-center text-xs opacity-60">Rhajesh Match · GANBARU!</p>
+</main>
+
+<!-- KUIS -->
+<main id="sc-quiz" class="hidden max-w-3xl mx-auto p-3 space-y-3">
+<div class="flex items-center gap-2"><button class="btn" onclick="goLobby()" aria-label="Lobi">🏠</button>
+<div class="panel flex-1 px-3 py-1"><div class="text-xs" id="qh"></div><div class="sfx text-lg" id="qp"></div></div></div>
+<div class="panel p-4"><div id="qtext" class="text-base leading-relaxed"></div></div>
+<div id="opts" class="grid gap-2"></div>
+<div id="fb"></div>
+<div class="flex gap-2"><button class="btn flex-1" id="prev" onclick="nav(-1)">◀ Sebelumnya</button><button class="btn red flex-1 text-right" id="next" onclick="nav(1)">Berikutnya ▶</button></div>
+</main>
+
+<!-- LAB -->
+<main id="sc-lab" class="hidden max-w-3xl mx-auto p-3 space-y-3">
+<button class="btn" onclick="goLobby()">🏠 Kembali ke Lobi</button>
+<div class="panel p-4"><div class="sfx text-3xl">🧪 LAB RUMUS</div>
+<div class="grid grid-cols-3 gap-2 mt-2 text-sm">
+<label>Jari-jari (r)<input id="lr" type="number" value="14" min="1" class="btn w-full"></label>
+<label>Sudut (θ°)<input id="lt" type="number" value="90" min="1" max="360" class="btn w-full"></label>
+<label>π<select id="lp" class="btn w-full"><option value="22/7">22/7</option><option value="3.14">3,14</option></select></label></div>
+<svg id="svg" viewBox="0 0 200 200" class="w-48 mx-auto my-3"></svg>
+<div id="lout" class="space-y-1"></div></div></main>
+
+<div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 panel px-3 py-2 text-sm hidden z-50"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+/* ---------- util & RNG ---------- */
+let R=Math.random;
+const mul=a=>()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+const ri=(a,b)=>a+Math.floor(R()*(b-a+1)),pick=a=>a[ri(0,a.length-1)];
+const sh=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=ri(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
+const m=x=>String(+(+x).toFixed(2)),n=x=>(+(+x).toFixed(2)).toLocaleString('id-ID'),rp=x=>'Rp'+n(x),M=s=>'$'+s+'$';
+const lin=(p,q)=>(p==1?'x':p==-1?'-x':p+'x')+(q>0?'+'+q:q<0?'-'+(-q):'');
+const mkN=(c,ex=[],f=x=>M(m(x)))=>{let s=[c];[...ex,...sh([c+1,c-1,c+2,c-2,c+3,c-3,c+10,c-10])].forEach(v=>{if(s.length<5&&!s.includes(v)&&(c<0||v>=0))s.push(v)});s.sort((a,b)=>a-b);return{o:s.map(f),a:s.indexOf(c)}};
+const mkX=(c,w)=>{let s=[c];w.forEach(v=>{if(!s.includes(v))s.push(v)});for(let i=1;s.length<5;i++)s.push(c+'+'+i);s=sh(s);return{o:s.map(M),a:s.indexOf(c)}};
+const Q=(q,k,d,f,s,t)=>({q,o:k.o,a:k.a,d,f,s,t});
+const deg=x=>M(m(x)+'^\\circ'),mt=u=>x=>M(m(x)+'\\text{ '+u+'}'),rpf=x=>rp(x);
+const PI='\\pi=\\frac{22}{7}';
+/* ---------- TEMPLATE SOAL (5 per bab) ---------- */
+const T=[[ // BAB 1
+v=>{const p=v?pick([2000,2500,3000,4000,6000,7500]):5000,it=v?pick(['pensil','pulpen','penghapus','buku gambar']):'buku tulis';
+return Q(`Sebuah toko alat tulis menjual ${it} dengan harga ${rp(p)} per buah. Jika banyak ${it} yang dibeli dinyatakan dengan $x$ dan total harga dinyatakan dengan $f(x)$, fungsi yang tepat adalah ....`,
+mkX(`f(x)=${p}x`,[`f(x)=x+${p}`,`f(x)=${p}-x`,`f(x)=x-${p}`,`f(x)=${p}+x^2`]),
+[`Harga satuan = ${rp(p)}`,`Banyak barang = $x$`],`\\text{total}=\\text{harga satuan}\\times\\text{banyak}`,
+[`\\text{total} = \\text{harga satuan}\\times\\text{banyak} ;; f(x) = ${p}\\times x || Setiap barang harganya ${rp(p)}, jadi untuk $x$ barang totalnya ${p} dikali $x$.`,`f(x) = ${p}x || Tulis dalam bentuk paling ringkas. Hubungannya perkalian, bukan penjumlahan.`,`f(2) = ${p}(2) ;; f(2) = ${2*p} || Uji dengan $x=2$: hasilnya ${rp(2*p)}, sama dengan 2 barang × ${rp(p)} ✓.`],'Kata "per buah" = KALI. Kata "awal/tambahan" = JUMLAH.')},
+v=>{const a=v?ri(2,9):3,b=v?ri(2,15):5,k=v?ri(2,12):4,c=a*k+b;
+return Q(`Diketahui fungsi $f(x)=${lin(a,b)}$. Nilai $f(${k})$ adalah ....`,mkN(c,[a*k-b,a+b+k,(a+b)*k]),[`$f(x)=${lin(a,b)}$`,`$x=${k}$`],`f(x)=ax+b\\Rightarrow f(k)=ak+b`,
+[`f(${k}) = ${a}(${k})+${b} || Ganti setiap $x$ dengan ${k}, tulis dalam kurung.`,`f(${k}) = ${a*k}+${b} || Kerjakan perkalian lebih dulu: ${a} × ${k} = ${a*k}.`,`f(${k}) = ${c} || Jumlahkan: ${a*k} + ${b} = ${c}. Jadi nilai $f(${k})$ adalah ${c}.`],'Kali dulu sebelum tambah (urutan operasi).')},
+v=>{const A=v?pick([5000,6000,8000,10000]):7000,B=v?pick([2000,2500,4000,5000]):3000;
+return Q(`Sebuah ojek online menetapkan tarif awal ${rp(A)} dan tarif tambahan ${rp(B)} setiap kilometer. Jika jarak perjalanan adalah $x$ kilometer, fungsi biaya perjalanan adalah ....`,
+mkX(`f(x)=${B}x+${A}`,[`f(x)=${A}x+${B}`,`f(x)=${A+B}x`,`f(x)=${A}-${B}x`,`f(x)=${B}-${A}x`]),
+[`Tarif awal = ${rp(A)} (tetap)`,`Tarif per km = ${rp(B)}`,`Jarak = $x$ km`],`f(x)=\\text{tarif per km}\\cdot x+\\text{tarif awal}`,
+[`\\text{biaya} = \\text{tarif per km}\\times x+\\text{tarif awal} || Biaya terdiri dari bagian yang berubah mengikuti jarak dan bagian tetap.`,`\\text{bagian jarak} = ${B}x ;; \\text{bagian tetap} = ${A} || Tarif tambahan ${rp(B)} dikali jarak $x$ km. Tarif awal ${rp(A)} hanya dibayar satu kali.`,`f(x) = ${B}x+${A} || Gabungkan kedua bagian.`,`f(1) = ${B}(1)+${A} ;; f(1) = ${A+B} || Uji $x=1$ km: biaya ${rp(A+B)} = tarif awal + 1 km ✓.`],'Tarif awal = konstanta, tarif per km = koefisien $x$.')},
+v=>{const a=v?ri(2,5):2,b=v?ri(2,6):3,c=v?ri(1,7):1,k=v?ri(2,4):2,r=a*k*k-b*k+c;
+return Q(`Diketahui $f(x)=${a}x^2-${b}x+${c}$. Nilai $f(${k})$ adalah ....`,mkN(r,[a*k*k+b*k+c,a*k*k-b*k-c,a*k-b*k+c]),[`$f(x)=${a}x^2-${b}x+${c}$`,`$x=${k}$`],`f(x)=ax^2+bx+c`,
+[`f(${k}) = ${a}(${k})^2-${b}(${k})+${c} || Ganti setiap $x$ dengan ${k}.`,`f(${k}) = ${a}(${k*k})-${b*k}+${c} ;; f(${k}) = ${a*k*k}-${b*k}+${c} || Pangkat lebih dulu: ${k}² = ${k*k}. Lalu kali koefisien: ${a}×${k*k}=${a*k*k} dan ${b}×${k}=${b*k}.`,`f(${k}) = ${a*k*k-b*k}+${c} ;; f(${k}) = ${r} || Kurangi dari kiri ke kanan: ${a*k*k}−${b*k}=${a*k*k-b*k}, lalu tambah ${c}. Hasilnya ${r}.`],'Hitung pangkat PERTAMA, lalu kali, lalu tambah/kurang.')},
+v=>{const a=v?ri(2,6):3,b=v?ri(2,9):6,x=v?ri(2,9):6,n_=a*x-b;
+return Q(`Diketahui fungsi $f(x)=${a}x-${b}$. Jika $f(a)=${n_}$, nilai $a$ adalah ....`,mkN(x,[x+1,x-1,n_]),[`$f(x)=${a}x-${b}$`,`$f(a)=${n_}$`],`f(a)=${a}a-${b}`,
+[`f(a) = ${n_} ;; ${a}a-${b} = ${n_} || Samakan $f(a)$ dengan nilai yang diketahui pada soal.`,`${a}a = ${n_}+${b} ;; ${a}a = ${n_+b} || Pindahkan −${b} ke ruas kanan, tandanya berubah menjadi +${b}.`,`a = \\frac{${n_+b}}{${a}} ;; a = ${x} || Bagi kedua ruas dengan ${a}.`,`f(${x}) = ${a}(${x})-${b} ;; f(${x}) = ${n_} || Cek: hasilnya ${n_}, sama dengan soal ✓.`],'Cek balik: $f('+x+')='+n_+'$ ✓')}
+],[ // BAB 2
+v=>{const a=ri(2,6),b=ri(1,9),c=ri(1,5),d=ri(1,9),k=ri(2,6),r=(a+c)*k+b+d;
+return Q(`Diketahui $f(x)=${lin(a,b)}$ dan $g(x)=${lin(c,d)}$. Nilai $(f+g)(${k})$ adalah ....`,mkN(r,[a*k+b-(c*k+d),(a*k+b)*(c*k+d)%97+1]),[`$f(x)=${lin(a,b)}$`,`$g(x)=${lin(c,d)}$`],`(f+g)(x)=f(x)+g(x)`,
+[`f(${k}) = ${a}(${k})${b<0?b:'+'+b} ;; f(${k}) = ${a*k}+${b} ;; f(${k}) = ${a*k+b} || Hitung $f(${k})$ lebih dulu: ganti $x$ dengan ${k}.`,`g(${k}) = ${c}(${k})+${d} ;; g(${k}) = ${c*k}+${d} ;; g(${k}) = ${c*k+d} || Lakukan hal yang sama untuk $g$.`,`(f+g)(${k}) = f(${k})+g(${k}) ;; (f+g)(${k}) = ${a*k+b}+${c*k+d} ;; (f+g)(${k}) = ${r} || Jumlahkan kedua hasil.`],'Boleh juga jumlahkan fungsinya dulu: $(f+g)(x)=${lin(a+c,b+d)}$.'.replace('${lin(a+c,b+d)}',lin(a+c,b+d)))},
+v=>{const a=ri(3,8),b=ri(1,9),c=ri(1,3),d=ri(1,9),k=ri(2,7),r=(a*k+b)-(c*k+d);
+return Q(`Diketahui $f(x)=${lin(a,b)}$ dan $g(x)=${lin(c,d)}$. Nilai $(f-g)(${k})$ adalah ....`,mkN(r,[(c*k+d)-(a*k+b),(a*k+b)+(c*k+d)]),[`$f(x)=${lin(a,b)}$`,`$g(x)=${lin(c,d)}$`],`(f-g)(x)=f(x)-g(x)`,
+[`f(${k}) = ${a}(${k})${b<0?b:'+'+b} ;; f(${k}) = ${a*k}+${b} ;; f(${k}) = ${a*k+b} || Hitung $f(${k})$ lebih dulu: ganti $x$ dengan ${k}.`,`g(${k}) = ${c}(${k})+${d} ;; g(${k}) = ${c*k}+${d} ;; g(${k}) = ${c*k+d} || Lakukan hal yang sama untuk $g$.`,`(f-g)(${k}) = f(${k})-g(${k}) ;; (f-g)(${k}) = ${a*k+b}-${c*k+d} ;; (f-g)(${k}) = ${r} || Kurangkan: hasil $f$ dikurangi hasil $g$. Urutannya tidak boleh tertukar.`],'Urutan pengurangan penting: $f-g\\neq g-f$.')},
+v=>{const a=ri(2,5),b=ri(1,6),c=ri(1,4),d=ri(1,6),k=ri(2,5),r=(a*k+b)*(c*k+d);
+return Q(`Diketahui $f(x)=${lin(a,b)}$ dan $g(x)=${lin(c,d)}$. Nilai $(f\\times g)(${k})$ adalah ....`,mkN(r,[(a*k+b)+(c*k+d),a*c*k*k+b*d]),[`$f(x)=${lin(a,b)}$`,`$g(x)=${lin(c,d)}$`],`(f\\cdot g)(x)=f(x)\\cdot g(x)`,
+[`f(${k}) = ${a}(${k})${b<0?b:'+'+b} ;; f(${k}) = ${a*k}+${b} ;; f(${k}) = ${a*k+b} || Hitung $f(${k})$ lebih dulu: ganti $x$ dengan ${k}.`,`g(${k}) = ${c}(${k})+${d} ;; g(${k}) = ${c*k}+${d} ;; g(${k}) = ${c*k+d} || Lakukan hal yang sama untuk $g$.`,`(f\\cdot g)(${k}) = f(${k})\\times g(${k}) ;; (f\\cdot g)(${k}) = ${a*k+b}\\times${c*k+d} ;; (f\\cdot g)(${k}) = ${r} || Kalikan kedua hasil.`],'Hitung nilai tiap fungsi dulu, baru kalikan.')},
+v=>{const a=ri(1,4),c=ri(1,3),k=ri(3,8),mm=ri(2,5),q=ri(2,5),dd=mm-c*k,b=q*mm-a*k;
+return Q(`Diketahui $f(x)=${lin(a,b)}$ dan $g(x)=${lin(c,dd)}$. Nilai $\\left(\\frac{f}{g}\\right)(${k})$ adalah ....`,mkN(q,[mm,q*mm,q+1]),[`$f(x)=${lin(a,b)}$`,`$g(x)=${lin(c,dd)}$`],`\\left(\\frac fg\\right)(x)=\\frac{f(x)}{g(x)},\\ g(x)\\neq0`,
+[`f(${k}) = ${a}(${k})+${b} ;; f(${k}) = ${a*k+b} || Hitung $f(${k})$ lebih dulu.`,`g(${k}) = ${c}(${k})${dd<0?dd:'+'+dd} ;; g(${k}) = ${mm} || Periksa penyebut: ${mm} ≠ 0, jadi pembagian boleh dilakukan.`,`\\left(\\frac fg\\right)(${k}) = \\frac{${a*k+b}}{${mm}} ;; \\left(\\frac fg\\right)(${k}) = ${q} || Bagi hasil $f$ dengan hasil $g$.`],'Pastikan penyebut $g(x)\\neq 0$.')},
+v=>{const p=v?pick([20000,25000,40000,50000]):50000,q=v?pick([100000,150000,250000]):200000,x=v?ri(6,15):10,r=p*x-q;
+return Q(`Sebuah perusahaan mencatat keuntungan dengan fungsi $f(x)=${p}x-${q}$, dengan $x$ menyatakan jumlah produk yang terjual. Jika perusahaan berhasil menjual ${x} produk, keuntungan yang diperoleh adalah ....`,
+mkN(r,[p*x+q,p*x,r-p],rpf),[`$f(x)=${p}x-${q}$`,`$x=${x}$ produk`],`\\text{untung}=\\text{pendapatan}-\\text{biaya}`,
+[`f(x) = ${p}x-${q} ;; f(${x}) = ${p}(${x})-${q} || Ganti $x$ dengan jumlah produk yang terjual, yaitu ${x}.`,`f(${x}) = ${p*x}-${q} || Kalikan dulu: ${p} × ${x} = ${p*x}.`,`f(${x}) = ${r} || Kurangi biaya ${q}. Keuntungan yang diperoleh ${rp(r)}.`],'Soal cerita: tulis fungsi dulu, baru substitusi.')}
+],[ // BAB 3
+v=>{const a=v?ri(2,5):2,b=v?ri(1,6):3,c=v?ri(1,3):1,d=v?ri(-5,5)||2:-1,k=v?ri(2,7):4,g=c*k+d,r=a*g+b;
+return Q(`Diketahui $f(x)=${lin(a,b)}$ dan $g(x)=${lin(c,d)}$. Nilai $(f\\circ g)(${k})$ adalah ....`,mkN(r,[a*k+b+c*k+d,c*(a*k+b)+d,g]),[`$f(x)=${lin(a,b)}$`,`$g(x)=${lin(c,d)}$`,`$x=${k}$`],`(f\\circ g)(x)=f(g(x))`,
+[`g(${k}) = ${c}(${k})${d<0?d:'+'+d} ;; g(${k}) = ${g} || Fungsi dalam ($g$) dikerjakan lebih dulu.`,`(f\\circ g)(${k}) = f(g(${k})) ;; (f\\circ g)(${k}) = f(${g}) || Hasil $g$ yaitu ${g} menjadi masukan untuk $f$.`,`f(${g}) = ${a}(${g})+${b} ;; f(${g}) = ${a*g}+${b} ;; f(${g}) = ${r} || Hitung $f(${g})$.`],'$f\\circ g$: kerjakan $g$ DULU (dalam), lalu $f$.')},
+v=>{const a=ri(2,4),b=ri(1,6),c=ri(1,3),d=ri(1,6),k=ri(2,6),fk=a*k+b,r=c*fk+d;
+return Q(`Diketahui $f(x)=${lin(a,b)}$ dan $g(x)=${lin(c,d)}$. Nilai $(g\\circ f)(${k})$ adalah ....`,mkN(r,[a*(c*k+d)+b,fk,c*k+d]),[`$f(x)=${lin(a,b)}$`,`$g(x)=${lin(c,d)}$`,`$x=${k}$`],`(g\\circ f)(x)=g(f(x))`,
+[`f(${k}) = ${a}(${k})+${b} ;; f(${k}) = ${fk} || Fungsi dalam sekarang adalah $f$, kerjakan lebih dulu.`,`(g\\circ f)(${k}) = g(f(${k})) ;; (g\\circ f)(${k}) = g(${fk}) || Hasil $f$ yaitu ${fk} menjadi masukan untuk $g$.`,`g(${fk}) = ${c}(${fk})+${d} ;; g(${fk}) = ${c*fk}+${d} ;; g(${fk}) = ${r} || Hitung $g(${fk})$.`],'$g\\circ f\\neq f\\circ g$ — urutan menentukan hasil.')},
+v=>{const mm=v?ri(2,6):4,nn=v?ri(1,9):2,i=v?ri(2,9):6,r=mm*i-nn;
+return Q(`Suatu mesin mengubah bilangan masukan dengan aturan setiap bilangan dikalikan ${mm} kemudian dikurang ${nn}. Jika masukan mesin adalah ${i}, hasil keluarannya adalah ....`,mkN(r,[mm*(i-nn),mm*i+nn,r+mm]),[`Aturan: $\\times${mm}$ lalu $-${nn}$`,`Masukan = ${i}`],`f(x)=${mm}x-${nn}`,
+[`f(x) = ${mm}x-${nn} || Aturan mesin: kalikan ${mm}, kemudian kurangi ${nn}.`,`f(${i}) = ${mm}(${i})-${nn} || Masukkan bilangan ${i} ke mesin.`,`f(${i}) = ${mm*i}-${nn} ;; f(${i}) = ${r} || Kali dulu (${mm}×${i}=${mm*i}), baru kurangi ${nn}. Hasil keluaran ${r}.`],'Ikuti urutan kalimat: KALI dulu, baru KURANG.')},
+v=>{const a=ri(2,5),b=ri(1,6),c=ri(2,4),d=ri(1,7),w=[lin(a*c,a*d-b),lin(a+c,b+d),lin(a*c,c*b+d),lin(a*c,a*d+b+1)],r=lin(a*c,a*d+b);
+return Q(`Diketahui $f(x)=${lin(a,b)}$ dan $g(x)=${lin(c,d)}$. Rumus $(f\\circ g)(x)$ adalah ....`,mkX(r,w),[`$f(x)=${lin(a,b)}$`,`$g(x)=${lin(c,d)}$`],`(f\\circ g)(x)=f(g(x))`,
+[`(f\\circ g)(x) = f(g(x)) ;; (f\\circ g)(x) = f(${lin(c,d)}) || Masukkan seluruh $g(x)$ ke setiap $x$ pada $f$.`,`(f\\circ g)(x) = ${a}(${lin(c,d)})+${b} || Tulis $f$ dengan $x$ diganti: ${a} dikali seluruh isi kurung.`,`(f\\circ g)(x) = ${a*c}x+${a*d}+${b} || Distribusi: ${a}×${c}x = ${a*c}x dan ${a}×${d} = ${a*d}.`,`(f\\circ g)(x) = ${r} || Jumlahkan suku konstanta: ${a*d}+${b} = ${a*d+b}.`],'Distribusikan koefisien ke SEMUA suku di dalam kurung.')},
+v=>{const p=ri(1,5),mm=ri(2,4),q=ri(1,6),k=ri(1,6),r=(k+p)*mm-q;
+return Q(`Diketahui $h(x)=x+${p}$, $g(x)=${mm}x$, dan $f(x)=x-${q}$. Nilai $(f\\circ g\\circ h)(${k})$ adalah ....`,mkN(r,[k*mm+p-q,(k-q)*mm+p,r+q]),[`$h(x)=x+${p}$`,`$g(x)=${mm}x$`,`$f(x)=x-${q}$`],`(f\\circ g\\circ h)(x)=f(g(h(x)))`,
+[`h(${k}) = ${k}+${p} ;; h(${k}) = ${k+p} || Mulai dari fungsi paling dalam, yaitu $h$.`,`g(${k+p}) = ${mm}(${k+p}) ;; g(${k+p}) = ${mm*(k+p)} || Hasil $h$ masuk ke $g$.`,`f(${mm*(k+p)}) = ${mm*(k+p)}-${q} ;; f(${mm*(k+p)}) = ${r} || Hasil $g$ masuk ke $f$ (paling luar). Hasil akhir ${r}.`],'Kerjakan dari fungsi PALING KANAN ke kiri.')}
+],[ // BAB 4
+v=>{const a=ri(2,5),b=ri(1,8),x=ri(2,9),k=a*x+b;
+return Q(`Diketahui $f(x)=${lin(a,b)}$. Nilai $f^{-1}(${k})$ adalah ....`,mkN(x,[a*k+b,k-b,x+1]),[`$f(x)=${lin(a,b)}$`],`f^{-1}(k)=x\\iff f(x)=k`,
+[`f(x) = ${k} ;; ${a}x+${b} = ${k} || Invers artinya mencari $x$ yang menghasilkan ${k}.`,`${a}x = ${k}-${b} ;; ${a}x = ${k-b} || Pindahkan +${b} ke ruas kanan menjadi −${b}.`,`x = \\frac{${k-b}}{${a}} ;; x = ${x} || Bagi dengan ${a}. Jadi $f^{-1}(${k})=${x}$.`,`f(${x}) = ${a}(${x})+${b} ;; f(${x}) = ${k} || Cek: hasilnya ${k} ✓.`],'Invers = "balikkan" proses: kurang dulu, lalu bagi.')},
+v=>{const a=ri(2,6),b=ri(1,9);
+return Q(`Invers dari fungsi $f(x)=${a}x+${b}$ adalah $f^{-1}(x)=$ ....`,mkX(`\\frac{x-${b}}{${a}}`,[`\\frac{x+${b}}{${a}}`,`\\frac{x}{${a}}+${b}`,`${a}x-${b}`,`\\frac{${a}}{x-${b}}`]),[`$f(x)=${a}x+${b}$`],`y=ax+b\\Rightarrow x=\\frac{y-b}{a}`,
+[`y = ${a}x+${b} || Misalkan $f(x)=y$.`,`${a}x = y-${b} || Pindahkan +${b} ke ruas kanan menjadi −${b}.`,`x = \\frac{y-${b}}{${a}} || Bagi kedua ruas dengan ${a}.`,`f^{-1}(x) = \\frac{x-${b}}{${a}} || Ganti nama peubah $y$ menjadi $x$.`],'Cek: $f(f^{-1}(x))=x$.')},
+v=>{let a,b,c,d;do{a=ri(1,4);b=ri(1,6);c=ri(1,3);d=ri(1,5)}while(a*d-b*c==0);
+const sg=(p,q)=>lin(p,q),r=`\\frac{${sg(-d,b).replace('x','x').replace(/^(-?\d*)x\+?(-?\d*)$/,'$&')}}{${sg(c,-a)}}`.replace(/\\frac\{[^}]*\}/,`\\frac{${sg(-d,b)}}`);
+const mk=(p1,q1,p2,q2)=>`\\frac{${lin(p1,q1)}}{${lin(p2,q2)}}`,ans=mk(-d,b,c,-a);
+return Q(`Diketahui $f(x)=\\frac{${lin(a,b)}}{${lin(c,d)}}$. Rumus $f^{-1}(x)$ adalah ....`,mkX(ans,[mk(d,b,c,-a),mk(-d,b,c,a),mk(-d,-b,c,-a),mk(d,-b,-c,a)]),[`$f(x)=\\frac{${lin(a,b)}}{${lin(c,d)}}$`],`f(x)=\\frac{ax+b}{cx+d}\\Rightarrow f^{-1}(x)=\\frac{-dx+b}{cx-a}`,
+[`a = ${a},\\; b = ${b},\\; c = ${c},\\; d = ${d} || Kenali bentuk $f(x)=\\frac{ax+b}{cx+d}$ lalu baca nilai $a,b,c,d$.`,`f^{-1}(x) = \\frac{-dx+b}{cx-a} || Rumus cepat: tukar $a$ dan $d$, beri tanda minus pada $d$ (pembilang) dan $a$ (penyebut).`,`\\text{pembilang} = -(${d})x+${b} ;; \\text{pembilang} = ${lin(-d,b)} || Masukkan $d=${d}$ dan $b=${b}$.`,`\\text{penyebut} = ${c}x-(${a}) ;; \\text{penyebut} = ${lin(c,-a)} || Masukkan $c=${c}$ dan $a=${a}$.`,`f^{-1}(x) = ${ans} || Gabungkan pembilang dan penyebut.`],'Hafalkan: tukar $a$ dan $d$, lalu beri tanda minus pada $d$ (pembilang) dan $a$ (penyebut).')},
+v=>{const c=ri(1,5),mm=ri(1,4),q=ri(2,5),b=mm*(q-1)-c,x0=c+mm;
+return Q(`Diketahui $f(x)=\\frac{${lin(1,b)}}{x-${c}}$. Nilai $f^{-1}(${q})$ adalah ....`,mkN(x0,[q,c*q+b,x0+2]),[`$f(x)=\\frac{${lin(1,b)}}{x-${c}}$`,`Cari $f^{-1}(${q})$`],`y=\\frac{x+b}{x-c}\\Rightarrow x=\\frac{cy+b}{y-1}`,
+[`\\frac{${lin(1,b)}}{x-${c}} = ${q} || Cari $x$ sehingga $f(x)=${q}$.`,`${lin(1,b)} = ${q}(x-${c}) || Kalikan silang: kedua ruas dikali $(x-${c})$.`,`${lin(1,b)} = ${q}x-${q*c} || Distribusikan ${q} ke dalam kurung.`,`${q}x-x = ${q*c}${b<0?b:'+'+b} ;; ${q-1}x = ${q*c+b} || Kumpulkan suku $x$ di kiri dan konstanta di kanan.`,`x = \\frac{${q*c+b}}{${q-1}} ;; x = ${x0} || Bagi dengan ${q-1}. Jadi $f^{-1}(${q})=${x0}$.`],'Kalikan silang untuk membuang pecahan.')},
+v=>{const A=v?ri(4,9)*1000:7000,B=v?pick([2000,2500,3000,4000]):3000,x0=ri(2,12),T=A+B*x0;
+return Q(`Biaya ojek online dinyatakan dengan $f(x)=${B}x+${A}$ (rupiah), dengan $x$ jarak dalam km. Jika Dina membayar ${rp(T)}, jarak perjalanannya adalah .... km`,mkN(x0,[x0+1,x0-1,Math.round(T/B)]),[`$f(x)=${B}x+${A}$`,`Biaya = ${rp(T)}`],`x=f^{-1}(T)=\\frac{T-${A}}{${B}}`,
+[`${B}x+${A} = ${T} || Biaya total ${rp(T)} disamakan dengan fungsi biaya.`,`${B}x = ${T}-${A} ;; ${B}x = ${T-A} || Pindahkan tarif awal ${A} ke ruas kanan.`,`x = \\frac{${T-A}}{${B}} ;; x = ${x0} || Bagi dengan tarif per km. Jarak perjalanan ${x0} km.`],'Invers dipakai untuk "mundur": dari biaya ke jarak.')}
+],[ // BAB 5
+v=>{const d=v?7*ri(3,40):70,r=22*d/7;
+return Q(`Sebuah ${v?pick(['roda sepeda','roda gerobak','roda mainan','roda motor','roda becak','roda troli']):'roda sepeda'} memiliki diameter ${d} cm. Keliling roda tersebut adalah .... (gunakan $\\pi=\\frac{22}{7}$)`,mkN(r,[r/2,r*2,r+10,r-10],mt('cm')),[`$d=${d}$ cm`,`$${PI}$`],`K=\\pi d`,
+[`K = \\pi d ;; K = \\frac{22}{7}\\times${d} || Diketahui diameter ${d} cm.`,`K = 22\\times\\frac{${d}}{7} ;; K = 22\\times${d/7} || Coret 7 dengan ${d}: ${d}÷7 = ${d/7}.`,`K = ${r} || 22 × ${d/7} = ${r} cm.`],'Diameter → $K=\\pi d$. Jari-jari → $K=2\\pi r$.')},
+v=>{const r=v?7*ri(1,9):7,L=22*r*r/7,o=v&&ri(0,1)?'meja':pick(['taman','kolam','lapangan']);
+return Q(`Sebuah ${o} berbentuk lingkaran memiliki jari-jari ${r} ${o=='meja'?'cm':'meter'}. Luas ${o} tersebut adalah .... (gunakan $\\pi=\\frac{22}{7}$)`,mkN(L,[L+10,L-10,2*L,22*r],mt(o=='meja'?'cm^2':'m^2')),[`$r=${r}$`,`$${PI}$`],`L=\\pi r^2`,
+[`L = \\pi r^2 ;; L = \\frac{22}{7}\\times${r}^2 || Luas memakai kuadrat jari-jari.`,`L = \\frac{22}{7}\\times${r*r} || ${r}² = ${r*r}.`,`L = 22\\times${r*r/7} || ${r*r}÷7 = ${r*r/7} (dicoret).`,`L = ${L} || 22 × ${r*r/7} = ${L}. Satuannya kuadrat.`],'Luas pakai $r^2$ (satuan kuadrat), keliling pakai $r$.')},
+v=>{const k=ri(1,9),r=7*k,t=pick([30,45,60,90,120,180,270]),L=t/360*2*22/7*r;
+return Q(`Sebuah juring lingkaran berjari-jari ${r} cm memiliki sudut pusat $${t}^\\circ$. Panjang busurnya adalah .... (gunakan $\\pi=\\frac{22}{7}$)`,mkN(L,[2*L,L/2,L+5,22*r*r/7],mt('cm')),[`$r=${r}$ cm`,`$\\theta=${t}^\\circ$`],`\\text{busur}=\\frac{\\theta}{360^\\circ}\\times2\\pi r`,
+[`K = 2\\pi r ;; K = 2\\times\\frac{22}{7}\\times${r} ;; K = ${44*k} || Keliling lebih dulu: 2×22×${k} = ${44*k}.`,`\\text{busur} = \\frac{${t}}{360}\\times K || Busur adalah sebagian keliling, sebesar perbandingan sudut ${t}° terhadap 360°.`,`\\text{busur} = \\frac{${t}}{360}\\times${44*k} ;; \\text{busur} = ${m(L)} || Kalikan. Panjang busur ${m(L)} cm.`],'Busur = pecahan sudut × keliling.')},
+v=>{const nn=v?pick([3,4,5,6,9,10,12,15,18,20,24,36]):8,a=360/nn,fd=v?pick(['pizza','kue tart','martabak manis','pai apel']):'pizza';
+return Q(`Sebuah ${fd} berbentuk lingkaran dipotong menjadi ${nn} bagian sama besar. Besar sudut pusat setiap potongan ${fd} adalah ....`,mkN(a,[360/(nn+1),360/(nn-1),2*a,a/2],deg),[`Satu lingkaran = $360^\\circ$`,`Dibagi ${nn} sama besar`],`\\theta=\\frac{360^\\circ}{n}`,
+[`\\theta = \\frac{360^\\circ}{n} ;; \\theta = \\frac{360^\\circ}{${nn}} || Satu ${fd} penuh = 360°, dibagi ${nn} bagian sama besar.`,`\\theta = ${m(a)}^\\circ || Hasil pembagian.`,`${nn}\\times${m(a)}^\\circ = 360^\\circ || Cek: jumlah semua potongan harus 360° ✓.`],'Satu putaran penuh selalu 360°.')},
+v=>{const d=v?7*ri(2,40):28,r=22*d/7,ob=v?pick(['taman','kolam','lapangan']):'taman';
+return Q(`Sebuah ${ob} berbentuk lingkaran mempunyai diameter ${d} meter. Panjang pagar yang diperlukan untuk mengelilingi ${ob} tersebut adalah .... (gunakan $\\pi=\\frac{22}{7}$)`,mkN(r,[r/2,2*r,r+11,r-11],mt('meter')),[`$d=${d}$ m`,`$${PI}$`],`K=\\pi d`,
+[`K = \\pi d || Pagar yang mengelilingi ${ob} sama dengan keliling lingkaran.`,`K = \\frac{22}{7}\\times${d} ;; K = 22\\times${d/7} || Coret 7: ${d}÷7 = ${d/7}.`,`K = ${r} || Panjang pagar ${r} meter.`],'"Mengelilingi" = keliling.')}
+]];
+const CH=[
+{t:'Aljabar & Nilai Fungsi Dasar',d:'Linier, kuadrat, f(a), toko buku & ojek',e:'🛒'},
+{t:'Operasi Aljabar Fungsi',d:'Jumlah, selisih, kali, bagi fungsi',e:'➕'},
+{t:'Fungsi Komposisi',d:'Dua & tiga fungsi (f∘g)',e:'🔗'},
+{t:'Fungsi Invers & Pecahan',d:'Invers linier & rasional',e:'🔄'},
+{t:'Geometri Lingkaran & Busur',d:'Keliling, luas, panjang busur',e:'⭕'}];
+const KON=[[
+'Fungsi adalah aturan yang memasangkan setiap masukan $x$ dengan tepat satu hasil $f(x)$. Pada soal cerita, kata "per ..." berarti DIKALIKAN, sedangkan "awal / tetap" berarti DITAMBAHKAN.',
+'Menghitung $f(k)$ artinya mengganti SEMUA huruf $x$ dengan angka $k$ (pakai kurung), lalu menghitung sesuai urutan operasi.',
+'Biaya = bagian tetap + bagian yang berubah mengikuti jarak. Ini fungsi linier $y=mx+c$: $m$ = tarif per km, $c$ = tarif awal.',
+'Fungsi kuadrat memuat $x^2$. Cara substitusinya sama, tetapi angka dipangkatkan dulu, baru dikali koefisien.',
+'Mencari $a$ dari $f(a)$ sama dengan menyelesaikan persamaan linier: samakan rumus dengan nilainya, pindahkan konstanta, lalu bagi.'],[
+'Penjumlahan fungsi: $(f+g)(x)=f(x)+g(x)$. Hitung nilai masing-masing fungsi di titik yang sama, lalu jumlahkan.',
+'Pengurangan fungsi: $(f-g)(x)=f(x)-g(x)$. Urutan penting, $f-g$ berbeda dengan $g-f$.',
+'Perkalian fungsi: $(f\\cdot g)(x)=f(x)\\cdot g(x)$. Hitung nilai tiap fungsi dulu, baru dikalikan.',
+'Pembagian fungsi: $\\left(\\frac fg\\right)(x)=\\frac{f(x)}{g(x)}$ dengan syarat penyebut $g(x)\\neq0$.',
+'Keuntungan = pendapatan − biaya. Jumlah produk yang terjual dimasukkan ke $x$ pada fungsi keuntungan.'],[
+'Komposisi $(f\\circ g)(x)=f(g(x))$: hasil fungsi DALAM ($g$) menjadi masukan fungsi LUAR ($f$).',
+'$(g\\circ f)(x)=g(f(x))$: sekarang $f$ yang berada di dalam, jadi kerjakan $f$ lebih dulu.',
+'Mesin bilangan adalah fungsi. Tahap-tahapnya dikerjakan berurutan, persis seperti komposisi fungsi.',
+'Untuk mencari rumus komposisi, substitusikan seluruh rumus fungsi dalam ke setiap $x$ pada fungsi luar, lalu sederhanakan (distribusi).',
+'Komposisi tiga fungsi dikerjakan dari yang PALING DALAM ke luar: $h$ dulu, lalu $g$, lalu $f$.'],[
+'Invers membalik kerja fungsi: jika $f(x)=y$ maka $f^{-1}(y)=x$.',
+'Rumus invers: tulis $y=f(x)$, isolasi $x$ (lawan operasi satu per satu), lalu tukar nama peubah $y\\to x$.',
+'Invers pecahan linear: jika $f(x)=\\frac{ax+b}{cx+d}$ maka $f^{-1}(x)=\\frac{-dx+b}{cx-a}$.',
+'Nilai invers dapat dicari tanpa rumus: cari $x$ sehingga $f(x)$ sama dengan nilai yang diminta, lalu selesaikan persamaannya.',
+'Invers dipakai untuk pertanyaan terbalik, yaitu dari hasil (biaya) kembali ke masukan (jarak).'],[
+'Keliling lingkaran $K=\\pi d=2\\pi r$. Satuannya sama dengan satuan panjang (cm atau m).',
+'Luas lingkaran $L=\\pi r^2$. Satuannya kuadrat (cm² atau m²). Dengan $\\pi=\\frac{22}{7}$, pilih jari-jari kelipatan 7 agar mudah dicoret.',
+'Panjang busur adalah SEBAGIAN keliling: $\\frac{\\theta}{360^\\circ}\\times2\\pi r$.',
+'Satu lingkaran penuh = $360^\\circ$. Dibagi $n$ bagian sama besar, setiap sudut pusat = $\\frac{360^\\circ}{n}$.',
+'Pagar yang mengelilingi taman bundar sama dengan keliling lingkaran: $K=\\pi d$.']];
+const build=(ch,t,v,seed)=>{R=mul(seed);const q=T[ch][t](v);R=Math.random;q.ch=ch;q.k=KON[ch][t];return q};
+const BK={};const N=100; // 5 bab × 100 = 500 soal (tanpa soal kembar)
+function bankAll(ch){if(BK[ch])return BK[ch];const seen=new Set(),a=[];for(let i=0;i<N;i++){let q,t=0;do{q=build(ch,i%5,i>=5,ch*10000+i*7+13+t*1009)}while(seen.has(q.q)&&++t<40);seen.add(q.q);a.push(q)}return BK[ch]=a}
+const bankQ=(ch,i)=>bankAll(ch)[i];
+/* ---------- STATE ---------- */
+const RANK=[['E','Pemula Aljabar'],['D','Murid Fungsi'],['C','Ahli Komposisi'],['B','Pendekar Invers'],['A','Master Lingkaran'],['S','Legenda Manga']];
+let st={xp:0,stars:0,done:{}};try{st=Object.assign(st,JSON.parse(localStorage.getItem('mmp')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('mmp',JSON.stringify(st))}catch(e){}};
+let S={};
+const math=el=>{if(window.renderMathInElement)renderMathInElement(el||document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});else setTimeout(()=>math(el),300)};
+const show=id=>{['sc-lobby','sc-quiz','sc-lab'].forEach(s=>$(s).classList.toggle('hidden',s!==id));scrollTo(0,0);math($(id))};
+/* ---------- LOADING ---------- */
+const msgs=['Memuat Chapter Soal...','Mengasah Logika Aljabar...','Menggambar Panel Lingkaran...','Siap! GANBARU!'];let pgv=0,tm;
+tm=setInterval(()=>{pgv=Math.min(100,pgv+4);$('pg').style.width=pgv+'%';$('pgt').textContent=msgs[Math.min(3,Math.floor(pgv/34))];if(pgv>=100){clearInterval(tm);$('startBtn').classList.remove('hidden')}},120);
+const skipLoad=()=>{pgv=96};
+const startApp=()=>{$('sc-load').classList.add('hidden');lobby()};
+/* ---------- LOBI ---------- */
+function lobby(){const lv=Math.min(5,Math.floor(st.xp/500));$('rank').textContent='Peringkat '+RANK[lv][0];$('rankn').textContent=RANK[lv][1];
+$('xpbar').style.width=(lv==5?100:(st.xp%500)/5)+'%';$('xptxt').textContent=st.xp+' XP'+(lv<5?' · '+(500-st.xp%500)+' XP ke peringkat berikut':' · MAKS');$('stars').textContent='⭐ '+st.stars;
+$('chs').innerHTML=CH.map((c,i)=>{const d=Object.keys(st.done).filter(k=>k.startsWith(i+'-')).length;return `<button class="btn" onclick="openQ(${i},'bank')"><div class="sfx text-lg">${c.e} BAB ${i+1}</div><div class="text-sm">${c.t}</div><div class="text-xs opacity-70">${c.d}</div><div class="bar mt-1" style="height:10px"><i style="width:${d}%"></i></div><div class="text-xs">${d}/100 selesai</div></button>`}).join('');
+$('aiCh').innerHTML='<option value="-1">🎲 Acak Semua Bab</option>'+CH.map((c,i)=>`<option value="${i}">Bab ${i+1}</option>`).join('');show('sc-lobby')}
+const goLobby=lobby;
+/* ---------- KUIS ---------- */
+function openQ(ch,mode){S={ch,mode,i:0};loadQ();show('sc-quiz')}
+function loadQ(){const c=S.mode=='ai'?(S.ch<0?ri(0,4):S.ch):S.ch;
+S.q=S.mode=='ai'?build(c,ri(0,4),1,(Math.random()*1e9)|0):bankQ(c,S.i);S.ans=null;
+$('qh').textContent=(S.mode=='ai'?'🤖 AI · ':'')+'BAB '+(S.q.ch+1)+': '+CH[S.q.ch].t;
+$('qp').textContent=S.mode=='ai'?'SOAL AI BARU':'PANEL '+(S.i+1)+' / '+N;
+$('qtext').innerHTML=S.q.q;
+$('opts').innerHTML=S.q.o.map((o,k)=>`<button class="btn opt flex gap-2" data-k="${k}" onclick="pickA(${k})"><span class="sfx text-xl w-6">${'ABCDE'[k]}.</span><span>${o}</span></button>`).join('');
+$('fb').innerHTML='';$('prev').classList.toggle('hidden',S.mode=='ai');$('next').textContent=S.mode=='ai'?'🤖 Soal Baru ▶':'Berikutnya ▶';
+const dn=st.done[S.q.ch+'-'+S.i];if(S.mode=='bank'&&dn)$('qp').textContent+=' ✔';math($('sc-quiz'));scrollTo(0,0)}
+/* ---------- FORMAT PENYELESAIAN KE BAWAH ---------- */
+function splitEq(t){const p=[];let d=0,c='';for(const ch of t){if(ch=='{')d++;else if(ch=='}')d--;if(ch=='='&&d==0){p.push(c);c=''}else c+=ch}p.push(c);return p}
+function fmtStep(str){const [L,E]=str.split('||');
+const rows=L.split(';;').map(l=>{l=l.trim();const p=splitEq(l);if(p.length<2)return l;const lf=p.shift().trim();return (lf?lf+' &= ':'&= ')+p.join('=')});
+return `<div class="solv">$$\\begin{aligned}${rows.join(' \\\\ ')}\\end{aligned}$$</div>`+(E?`<div class="expl">💬 <b>Penjelasan:</b> ${E.trim()}</div>`:'')}
+function solution(q){const chains=[];let cur=null;
+q.s.forEach((st,i)=>{const [L]=st.split('||');L.split(';;').forEach((l,j,arr)=>{l=l.trim();const p=splitEq(l);const last=j==arr.length-1;
+if(p.length<2){chains.push({left:l,rows:[],raw:1});cur=null;return}
+const lf=p.shift().trim(),r=p.join('=').trim(),tag=last?i+1:0;
+if(cur&&(lf===''||lf===cur.left))cur.rows.push({r,n:tag});else{cur={left:lf,rows:[{r,n:tag}]};chains.push(cur)}})});
+const defs={};q.d.forEach(x=>{const m=x.match(/^\$([a-z])\(x\)=(.+)\$$/);if(m)defs[m[1]]=m[2]});
+const out=chains.map((c,ci)=>{if(c.raw)return c.left;let rows=c.rows.slice(),left=c.left;const m=left.match(/^([a-z])\(-?\d+\)$/);
+if(m&&defs[m[1]]){rows.unshift({r:defs[m[1]],n:0});left=m[1]+'(x)'}
+return rows.map((w,k)=>{let r=w.r;if(ci==chains.length-1&&k==rows.length-1)r='\\underline{\\underline{'+r+'}}';return (k==0?left+' &= ':'&= ')+r}).join(' \\\\ ')}).map(b=>'\\begin{aligned}'+b+'\\end{aligned}');
+const ex=q.s.map((st,i)=>{const E=(st.split('||')[1]||'').trim();return E?`<div class="expl">▸ ${E}</div>`:''}).join('');
+return `<div class="solv">$$${out.join('$$$$')}$$</div><div class="mt-2"><b>💬 Penjelasan:</b></div>${ex}`}
+function pickA(k){if(S.ans!==null)return;S.ans=k;const q=S.q,ok=k==q.a,key=q.ch+'-'+S.i;
+document.querySelectorAll('.opt').forEach((b,i)=>{if(i==q.a)b.classList.add('ok');else if(i==k)b.classList.add('bad')});
+let gain=0;if(ok&&(S.mode=='ai'||!st.done[key])){gain=100;st.xp+=100;st.stars+=1;if(S.mode=='bank')st.done[key]=1;save()}
+const hd=ok?`<div class="sfx text-5xl pop text-green-700">BAM! BENAR! ${gain?'(+100 XP)':'(sudah diklaim)'}</div><div class="bub mt-2">SUKSES! Tetap baca panel pembahasan agar paham alurnya ya!</div>`
+:`<div class="sfx text-5xl pop text-red-600">BELUM TEPAT!</div><div class="bub mt-2">Belum Tepat! Mari kita bedah panel penyelesaiannya: jawaban benar adalah <b>${'ABCDE'[q.a]}</b>.</div>`;
+const ask=q.q.split(/(?<=[.?])\s+(?=[A-Z])/).pop().replace(/\.{3,}/g,'…');
+const why=ok?'':`<div class="sec" style="border-color:#e11d2e"><h3 style="background:#e11d2e">🔎 KENAPA JAWABANMU KELIRU?</h3><div>Kamu memilih <b>${'ABCDE'[k]}</b> (${q.o[k]}). Nilainya berbeda dengan hasil perhitungan. Penyebab paling umum: salah urutan operasi, salah tanda (+/−), atau tertukar rumus. Cocokkan pekerjaanmu dengan Langkah 1–${q.s.length} di bawah, lalu coba soal berikutnya!</div></div>`;
+$('fb').innerHTML=hd+why+`<div class="panel p-3 mt-3"><div class="sfx text-3xl">📖 PEMBAHASAN LENGKAP</div>
+<div class="sec"><h3>🎯 1. DIK &amp; DIT</h3><div><b>Dit :</b> ${ask}<br><b>Dik :</b><ul class="list-disc ml-5">${q.d.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>
+<div class="sec"><h3>📘 2. KONSEP &amp; RUMUS UTAMA</h3><div>${q.k}<div class="mt-1 bg-yellow-100 border-2 border-black px-2">$$${q.f}$$</div></div></div>
+<div class="sec"><h3>🛠️ 3. PENYELESAIAN</h3><div>${solution(q)}</div></div>
+<div class="ans"><b>✅ JAWABAN: ${'ABCDE'[q.a]}.</b> ${q.o[q.a]}</div>
+<div class="sec"><h3>💬 PENJELASAN KESIMPULAN</h3><div>Dari langkah-langkah di atas, hasil akhirnya adalah ${q.o[q.a]}. Jadi jawaban yang benar adalah pilihan <b>${'ABCDE'[q.a]}</b>.<br><b>Intinya:</b> ${q.k}</div></div>
+<div class="sec"><h3>🔁 4. CEK ULANG</h3><div>Masukkan jawaban <b>${'ABCDE'[q.a]}</b> kembali ke soal. Hasilnya harus cocok dengan data yang diketahui. Jika belum cocok, periksa lagi tanda dan urutan operasi.</div></div>
+<div class="bub mt-3">💡 <b>Tips Manga / Jebakan:</b> ${q.t}</div></div>`;math($('fb'));setTimeout(()=>$('fb').scrollIntoView({behavior:'smooth'}),150)}
+function nav(d){if(S.mode=='ai')return loadQ();const i=S.i+d;if(i<0||i>=N){if(i>=N){toast('🎉 Bab selesai! GANBARU!');return goLobby()}return}S.i=i;loadQ()}
+/* ---------- LAB ---------- */
+function showLab(){show('sc-lab');calc()}
+function calc(){const r=+$('lr').value||0,t=Math.min(360,+$('lt').value||0),p=eval($('lp').value),ps=$('lp').value=='22/7'?'\\frac{22}{7}':'3{,}14';
+const arc=t/360*2*p*r,K=2*p*r,L=p*r*r,e=t*Math.PI/180,x=100+80*Math.cos(e),y=100-80*Math.sin(e);
+$('svg').innerHTML=`<circle cx="100" cy="100" r="80" fill="#fff" stroke="#111" stroke-width="3"/><path d="M100 100 L180 100 A80 80 0 ${t>180?1:0} 0 ${x.toFixed(1)} ${y.toFixed(1)} Z" fill="#111" opacity=".85"/><text x="100" y="196" text-anchor="middle" font-size="12" font-weight="900">θ = ${t}°</text>`;
+$('lout').innerHTML=[`Keliling: $K=2\\pi r=2\\times${ps}\\times${r}=${m(K)}$`,`Luas: $L=\\pi r^2=${m(L)}$`,`Panjang busur: $\\frac{${t}}{360}\\times2\\times${ps}\\times${r}=\\mathbf{${m(arc)}}$`,`Luas juring: $\\frac{${t}}{360}\\times\\pi r^2=${m(t/360*L)}$`].map(x=>`<div class="step">${x}</div>`).join('');math($('lout'))}
+['lr','lt','lp'].forEach(i=>$(i).addEventListener('input',calc));
+/* ---------- PWA ---------- */
+let dp=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e});
+async function installApp(){if(dp){dp.prompt();await dp.userChoice;dp=null}else toast('Chrome: menu ⋮ → "Instal aplikasi" / "Tambahkan ke layar utama". Pastikan dibuka lewat https (GitHub Pages).')}
+function toast(t){const e=$('toast');e.textContent=t;e.classList.remove('hidden');setTimeout(()=>e.classList.add('hidden'),4000)}
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script>
+<!--
+PANDUAN DEPLOY GITHUB PAGES
+1. Simpan file ini sebagai index.html (satu folder dengan manifest.json, sw.js, icon.svg, .github/workflows/pages.yml).
+2. GitHub → New repository (mis. rhajesh-match, Public).
+3. Add file → Upload files → unggah semua file (termasuk folder .github) → Commit.
+4. Settings → Pages → Source: "GitHub Actions" (atau Deploy from branch: main / root).
+5. Tunggu 1–2 menit; buka https://USERNAME.github.io/rhajesh-match/ di Chrome HP → Instal.
+-->
+</body></html>
