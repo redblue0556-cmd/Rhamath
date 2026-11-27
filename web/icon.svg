@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#d41a28"/>
+  <circle cx="256" cy="256" r="188" fill="#fffdf6" stroke="#111111" stroke-width="20"/>
+  <circle cx="256" cy="256" r="136" fill="none" stroke="#111111" stroke-width="14"/>
+  <!-- Manga headband bar -->
+  <path d="M98 176 H414 V212 H98 Z" fill="#111111"/>
+  <!-- Headband knot & tails -->
+  <circle cx="256" cy="194" r="24" fill="#111111" stroke="#fffdf6" stroke-width="6"/>
+  <path d="M398 178 C436 154, 466 130, 480 102 C474 148, 452 178, 412 194 Z" fill="#111111" stroke="#fffdf6" stroke-width="6"/>
+  <path d="M402 200 C442 204, 474 192, 492 172 C474 214, 444 228, 404 220 Z" fill="#111111" stroke="#fffdf6" stroke-width="6"/>
+  <!-- Pi symbol -->
+  <path d="M188 262 H324 M222 262 V348 M290 262 V334 C290 348, 304 352, 316 344" fill="none" stroke="#111111" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Sparkles -->
+  <path d="M164 316 L172 332 L188 340 L172 348 L164 364 L156 348 L140 340 L156 332 Z" fill="#111111"/>
+  <path d="M348 316 L356 332 L372 340 L356 348 L348 364 L340 348 L324 340 L340 332 Z" fill="#111111"/>
+</svg>

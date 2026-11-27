@@ -1,0 +1,19 @@
+{
+  "name": "Rhajesh Match",
+  "short_name": "Rhajesh Match",
+  "description": "Kuis matematika interaktif bergaya manga untuk belajar Aljabar Fungsi, Komposisi, Invers, dan Geometri Lingkaran.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f6f1e3",
+  "theme_color": "#111111",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

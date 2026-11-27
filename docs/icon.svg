@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#D41A28"/>
+  <circle cx="256" cy="264" r="176" fill="#FFFDF6" stroke="#111111" stroke-width="20"/>
+  <circle cx="256" cy="264" r="134" fill="none" stroke="#111111" stroke-width="10" stroke-dasharray="48 18"/>
+  <path d="M98 188 Q256 154 414 188 L402 214 Q256 184 110 214 Z" fill="#111111"/>
+  <path d="M376 188 C416 164 446 142 464 124 C454 160 434 184 402 198 Z" fill="#111111"/>
+  <path d="M388 202 C426 196 454 198 474 206 C446 220 420 222 390 214 Z" fill="#111111"/>
+  <text x="256" y="330" text-anchor="middle" font-family="Georgia,serif" font-weight="900" font-size="168" fill="#111111">π</text>
+  <polygon points="154,284 162,300 178,308 162,316 154,332 146,316 130,308 146,300" fill="#111111"/>
+  <polygon points="358,284 366,300 382,308 366,316 358,332 350,316 334,308 350,300" fill="#111111"/>
+</svg>
